@@ -1,0 +1,62 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: showcase-db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=marketplace
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "127.0.0.1:5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  backend:
+    build: ./backend
+    container_name: showcase-backend
+    ports:
+      - "127.0.0.1:8000:8000"
+    volumes:
+      - ./backend/data:/app/data
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+      - SECRET_KEY=${SECRET_KEY}
+      - FRONTEND_URL=${FRONTEND_URL:-http://localhost}
+      - ENV=${ENV:-development}
+      - SEED_DEMO_USERS=${SEED_DEMO_USERS:-}
+      - SEED_ADMIN_PASSWORD=${SEED_ADMIN_PASSWORD:-}
+      - SEED_USER_PASSWORD=${SEED_USER_PASSWORD:-}
+      - SUPERUSER_USERNAME=${SUPERUSER_USERNAME:-}
+      - SUPERUSER_EMAIL=${SUPERUSER_EMAIL:-}
+      - SUPERUSER_PASSWORD=${SUPERUSER_PASSWORD:-}
+      - AI_API_KEY=${AI_API_KEY:-}
+      - AI_BASE_URL=${AI_BASE_URL:-https://openrouter.ai/api/v1}
+      - AI_MODEL=${AI_MODEL:-google/gemma-4-31b-it:free}
+      - MAX_IMAGE_MB=${MAX_IMAGE_MB:-}
+      - MEDIA_STORAGE=${MEDIA_STORAGE:-}
+      - REFRESH_COOKIE_PATH=${REFRESH_COOKIE_PATH:-}
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL:-}
+    container_name: showcase-frontend
+    ports:
+      - "127.0.0.1:80:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  pgdata:

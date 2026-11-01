@@ -1,0 +1,118 @@
+/* Светлая тема (по умолчанию) */
+:root {
+  color-scheme: light; /* родные элементы (полосы прокрутки, календарь, чекбоксы) в тон теме */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8fafc;
+  --bg-tertiary: #f1f5f9;
+  --bg-card: #ffffff;
+  
+  --text-primary: #1a2634;
+  --text-secondary: #4a5568;
+  --text-muted: #64748b;
+  
+  --border-color: #eaeef2;
+  --border-hover: #2ecc71;
+  
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-hover: 0 8px 20px rgba(46, 204, 113, 0.12);
+  
+  --primary-color: #1a7a40;
+  --primary-hover: #196f3d;
+  --primary-light: #e8f5e9;
+  
+  --input-bg: #ffffff;
+  --input-border: #8392a8;
+  --input-focus: #1a7a40;
+  
+  --navbar-bg: #ffffff;
+  --navbar-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  --navbar-text: #4a5568;
+  
+  --success-bg: #e8f5e9;
+  --success-text: #166534;
+  --warning-bg: #fff3e0;
+  --warning-text: #b45309;
+  --danger-bg: #fee;
+  --danger-text: #c0392b;
+  --info-bg: #e3f2fd;
+  --info-text: #1565c0;
+  --purple-bg: #f3e5f5;
+  --purple-text: #9c27b0;
+  
+  --hover-bg: #f8fafc;
+  --hero-gradient: linear-gradient(135deg, #1a7a40, #196f3d);
+  
+  --toggle-bg: #f1f5f9;
+  --toggle-border: #cbd5e0;
+  --toggle-knob: #2ecc71;
+  --toggle-knob-active: #2ecc71;
+  
+  --modal-overlay: rgba(0, 0, 0, 0.5);
+
+  --on-primary: #ffffff;      /* текст на фоне --primary-color */
+  --focus-ring: #1565c0;      /* кольцо фокуса с клавиатуры */
+}
+
+/* Темная тема */
+[data-theme="dark"] {
+  color-scheme: dark;
+  --bg-primary: #0f172a;
+  --bg-secondary: #0f172a;
+  --bg-tertiary: #1e293b;
+  --bg-card: #1e293b;
+  
+  --text-primary: #f1f5f9;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
+  
+  --border-color: #334155;
+  --border-hover: #2ecc71;
+  
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --shadow-hover: 0 8px 20px rgba(46, 204, 113, 0.2);
+  
+  --primary-color: #2ecc71;
+  --primary-hover: #27ae60;
+  --primary-light: #1e3a2f;
+  
+  --input-bg: #1e293b;
+  --input-border: #64748b;
+  --input-focus: #2ecc71;
+  
+  --navbar-bg: #0f172a;
+  --navbar-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --navbar-text: #cbd5e1;
+  
+  --success-bg: #1e3a2f;
+  --success-text: #6ee7b7;
+  --warning-bg: #3d2e1e;
+  --warning-text: #fbbf24;
+  --danger-bg: #3d1e1e;
+  --danger-text: #f87171;
+  --info-bg: #1e2a3d;
+  --info-text: #60a5fa;
+  --purple-bg: #2e1e3d;
+  --purple-text: #c084fc;
+  
+  --hover-bg: #334155;
+  --hero-gradient: linear-gradient(135deg, #1e8449, #196f3d);
+  
+  --toggle-bg: #1e293b;
+  --toggle-border: #475569;
+  --toggle-knob: #cbd5e1;
+  --toggle-knob-active: #2ecc71;
+  
+  --modal-overlay: rgba(0, 0, 0, 0.7);
+
+  --on-primary: #0f172a;      /* на ярком зелёном тёмная тема использует тёмный текст */
+  --focus-ring: #93c5fd;
+}
+
+/* Глобальное применение */
+body {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  transition: background-color 0.3s, color 0.3s;
+}
