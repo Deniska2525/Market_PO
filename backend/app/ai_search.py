@@ -89,8 +89,19 @@ SYSTEM_PROMPT = """Ты помогаешь подбирать университ
 """
 
 
+def _api_key() -> str:
+    """Ключ из окружения без пробелов, переводов строк и кавычек по краям: при копировании
+    из панели хостинга они часто попадают в значение, и провайдер отвечает 401."""
+    return os.getenv("AI_API_KEY", "").strip().strip("\"'").strip()
+
+
+def _describe_key(key: str) -> str:
+    """Безопасное описание ключа для журнала: длина и начало, но не сам ключ."""
+    return f"длина {len(key)}, начало «{key[:9]}», конец «…{key[-4:]}»" if len(key) > 13 else f"длина {len(key)}"
+
+
 def ai_available() -> bool:
-    return bool(os.getenv("AI_API_KEY"))
+    return bool(_api_key())
 
 
 def _published_docs(db: Session) -> list:
@@ -169,7 +180,7 @@ def _parse_final_json(raw: str) -> dict:
 def ai_search(query: str, db: Session) -> dict:
     """Подбор нейросетью. Бросает RuntimeError без ключа и APIError при сбое провайдера:
     роутер в этих случаях переключается на keyword_search()."""
-    api_key = os.getenv("AI_API_KEY")
+    api_key = _api_key()
     if not api_key:
         raise RuntimeError("AI_API_KEY не задана")
 
@@ -191,7 +202,8 @@ def ai_search(query: str, db: Session) -> dict:
             )
         except APIError as exc:
             # В логах видна точная причина: 401 — неверный ключ, 429 — исчерпан лимит и т.д.
-            logger.error("Ошибка обращения к AI-провайдеру (%s): %s", AI_BASE_URL, exc)
+            logger.error("Ошибка обращения к AI-провайдеру (%s, модель %s, ключ: %s): %s",
+                         AI_BASE_URL, AI_MODEL, _describe_key(api_key), exc)
             raise
 
         message = response.choices[0].message
