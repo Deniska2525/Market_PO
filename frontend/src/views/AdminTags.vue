@@ -25,7 +25,7 @@
             <td><router-link :to="{ path: '/cards', query: { tag: t.name } }">{{ t.name }}</router-link></td>
             <td>{{ t.count }}</td>
             <td class="u-col-actions">
-              <button class="u-icon-btn" title="Удалить" aria-label="Удалить" @click="askDelete(t)">🗑️</button>
+              <button class="u-icon-btn" title="Удалить" aria-label="Удалить" @click="askDelete(t)"><AppIcon name="trash" :size="18" /></button>
             </td>
           </tr>
         </tbody>
@@ -36,6 +36,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
+import AppIcon from '../components/AppIcon.vue'
 import universityService from '../services/university'
 import { useNotify } from '../composables/useNotify'
 import { extractErrors } from '../utils/format'
