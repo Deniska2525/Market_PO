@@ -17,6 +17,11 @@
   background: var(--hover-bg);
 }
 
+.user-trigger:focus-visible {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
 .user-avatar {
   width: 32px;
   height: 32px;
@@ -35,8 +40,8 @@
   font-weight: 500;
 }
 
+/* Стрелка теперь SVG-иконка: размер задаётся в компоненте, цвет наследуется */
 .arrow {
-  font-size: 0.7rem;
   color: var(--text-muted);
   transition: transform 0.2s;
 }
@@ -68,10 +73,13 @@
   border-bottom: 1px solid var(--border-color);
 }
 
+/* Пункт меню: иконка слева, подпись рядом.
+   justify-content: flex-start вместо space-between, иначе иконка и текст разъезжаются по краям */
 .dropdown-item {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
+  gap: 0.7rem;
   width: 100%;
   padding: 0.75rem 1rem;
   text-align: left;
@@ -79,10 +87,29 @@
   border: none;
   cursor: pointer;
   color: var(--text-secondary);
-  transition: background 0.2s;
+  font: inherit;
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s;
 }
 
+.item-icon {
+  opacity: 0.75;
+  transition: opacity 0.2s;
+}
+
+.dropdown-item:hover .item-icon,
+.dropdown-item:focus-visible .item-icon {
+  opacity: 1;
+}
+
+.dropdown-item:focus-visible {
+  outline: 2px solid var(--primary-color);
+  outline-offset: -2px;
+}
+
+/* Значок со счётчиком прижимается вправо */
 .item-badge {
+  margin-left: auto;
   background: var(--primary-color);
   color: white;
   font-size: 0.75rem;
@@ -108,9 +135,10 @@
 
 .logout:hover {
   background: var(--danger-bg);
+  color: var(--danger-text);
 }
 
-/* Темная тема для dropdown */
+/* Тёмная тема для dropdown */
 [data-theme="dark"] .dropdown {
   background: var(--bg-card);
   border-color: var(--border-color);
@@ -123,6 +151,11 @@
 [data-theme="dark"] .dropdown-item:hover {
   background: var(--hover-bg);
   color: var(--text-primary);
+}
+
+[data-theme="dark"] .logout,
+[data-theme="dark"] .logout:hover {
+  color: var(--danger-text);
 }
 
 [data-theme="dark"] .welcome {
