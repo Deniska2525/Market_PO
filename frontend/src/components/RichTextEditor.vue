@@ -6,8 +6,12 @@
         :key="b.title"
         type="button"
         :title="b.title"
+        :aria-label="b.title"
         @mousedown.prevent="b.run"
-      >{{ b.label }}</button>
+      >
+        <AppIcon v-if="b.icon" :name="b.icon" :size="16" />
+        <template v-else>{{ b.label }}</template>
+      </button>
     </div>
     <div
       ref="editor"
@@ -26,6 +30,7 @@
 // поэтому здесь важны только удобство и аккуратные ссылки. Позже его можно
 // заменить на TipTap: интерфейс (v-model со строкой HTML) останется тем же.
 import { ref, onMounted, watch } from 'vue'
+import AppIcon from './AppIcon.vue'
 import { useNotify } from '../composables/useNotify'
 
 const props = defineProps({
@@ -95,8 +100,8 @@ const buttons = [
   { label: '¶', title: 'Обычный абзац', run: () => exec('formatBlock', '<p>') },
   { label: '• Список', title: 'Маркированный список', run: () => exec('insertUnorderedList') },
   { label: '1. Список', title: 'Нумерованный список', run: () => exec('insertOrderedList') },
-  { label: '❝', title: 'Цитата', run: () => exec('formatBlock', '<blockquote>') },
-  { label: '🔗', title: 'Ссылка', run: addLink },
+  { icon: 'quote', title: 'Цитата', run: () => exec('formatBlock', '<blockquote>') },
+  { icon: 'link', title: 'Ссылка', run: addLink },
   { label: 'Tx', title: 'Убрать форматирование', run: () => exec('removeFormat') }
 ]
 
@@ -150,6 +155,10 @@ watch(() => props.modelValue, value => {
   background: transparent;
   color: var(--text-secondary);
   padding: 0.25rem 0.6rem;
+  min-height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 6px;
   cursor: pointer;
   font-size: 0.85rem;
