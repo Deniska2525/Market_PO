@@ -3,7 +3,7 @@
     <button class="user-trigger" @click="toggle" :aria-expanded="isOpen" aria-haspopup="menu">
       <span class="user-avatar">{{ initials }}</span>
       <span class="user-name">{{ displayName }}</span>
-      <span class="arrow" :class="{ open: isOpen }">▼</span>
+      <AppIcon name="chevron-down" :size="14" class="arrow" :class="{ open: isOpen }" />
     </button>
 
     <div v-if="isOpen" class="dropdown" role="menu">
@@ -11,13 +11,32 @@
         {{ authStore.welcomeMessage }}
         <small v-if="authStore.facultyName" class="faculty-note">{{ authStore.facultyName }}</small>
       </div>
+
       <template v-if="authStore.isStaff">
-        <router-link to="/manage" class="dropdown-item" @click="close">🗂️ Карточки</router-link>
-        <router-link to="/manage/inquiries" class="dropdown-item" @click="close">📨 Заявки</router-link>
+        <router-link to="/manage" class="dropdown-item" role="menuitem" @click="close">
+          <AppIcon name="folder" class="item-icon" />
+          <span>Карточки</span>
+        </router-link>
+        <router-link to="/manage/inquiries" class="dropdown-item" role="menuitem" @click="close">
+          <AppIcon name="inbox" class="item-icon" />
+          <span>Заявки</span>
+        </router-link>
       </template>
-      <router-link v-if="authStore.isSuperuser" to="/admin" class="dropdown-item" @click="close">⚙️ Администрирование</router-link>
-      <router-link to="/profile" class="dropdown-item" @click="close">📝 Редактировать профиль</router-link>
-      <button class="dropdown-item logout" @click="handleLogout">🚪 Выйти</button>
+
+      <router-link v-if="authStore.isSuperuser" to="/admin" class="dropdown-item" role="menuitem" @click="close">
+        <AppIcon name="shield" class="item-icon" />
+        <span>Администрирование</span>
+      </router-link>
+
+      <router-link to="/profile" class="dropdown-item" role="menuitem" @click="close">
+        <AppIcon name="user" class="item-icon" />
+        <span>Редактировать профиль</span>
+      </router-link>
+
+      <button type="button" class="dropdown-item logout" role="menuitem" @click="handleLogout">
+        <AppIcon name="logout" class="item-icon" />
+        <span>Выйти</span>
+      </button>
     </div>
   </div>
 </template>
@@ -25,6 +44,7 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useAuthStore } from '../stores/auth'
+import AppIcon from './AppIcon.vue'
 
 const emit = defineEmits(['logout'])
 
