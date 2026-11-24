@@ -10,7 +10,7 @@
           class="nav-link" 
           :class="{ active: $route.path === item.path }"
         >
-          <span class="nav-icon">{{ item.icon }}</span>
+          <AppIcon :name="item.icon" :size="20" class="nav-icon" />
           <span class="nav-text">{{ item.name }}</span>
         </router-link>
       </div>
@@ -24,6 +24,7 @@
 
 <script setup>
 import { useAuthStore } from '../stores/auth';
+import AppIcon from '../components/AppIcon.vue';
 import { useRouter } from 'vue-router';
 import { onMounted } from 'vue';
 
@@ -31,10 +32,10 @@ const authStore = useAuthStore();
 const router = useRouter();
 
 const navItems = [
-  { path: '/admin', name: 'Обзор', icon: '📊' },
-  { path: '/admin/faculties', name: 'Факультеты', icon: '🏛️' },
-  { path: '/admin/users', name: 'Пользователи', icon: '👥' },
-  { path: '/admin/tags', name: 'Теги', icon: '🏷️' }
+  { path: '/admin', name: 'Обзор', icon: 'bar-chart' },
+  { path: '/admin/faculties', name: 'Факультеты', icon: 'landmark' },
+  { path: '/admin/users', name: 'Пользователи', icon: 'users' },
+  { path: '/admin/tags', name: 'Теги', icon: 'tag' }
 ];
 
 onMounted(() => {
@@ -102,7 +103,7 @@ onMounted(() => {
 }
 
 .nav-icon {
-  font-size: 1.2rem;
+  flex-shrink: 0;
 }
 
 .nav-text {
@@ -123,7 +124,8 @@ onMounted(() => {
   }
   
   .nav-icon {
-    font-size: 1.4rem;
+    width: 22px;
+    height: 22px;
   }
 }
 </style>
