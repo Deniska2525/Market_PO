@@ -10,7 +10,9 @@
       :aria-describedby="dialog.message ? `dlg-msg-${dialog.id}` : undefined"
       tabindex="-1"
     >
-      <div class="dlg-icon" aria-hidden="true">{{ TONE_ICONS[dialog.tone] }}</div>
+      <div class="dlg-icon" aria-hidden="true">
+        <AppIcon :name="TONE_ICONS[dialog.tone]" :size="44" :stroke-width="1.75" />
+      </div>
       <h3 :id="`dlg-title-${dialog.id}`">{{ dialog.title }}</h3>
       <p v-if="dialog.message" :id="`dlg-msg-${dialog.id}`" class="dlg-message">{{ dialog.message }}</p>
 
@@ -55,10 +57,11 @@
 
 <script setup>
 import { ref, computed } from 'vue'
+import AppIcon from './AppIcon.vue'
 import { useNotificationStore } from '../stores/notifications'
 import { useDialogA11y } from '../composables/useDialogA11y'
 
-const TONE_ICONS = { info: 'ℹ️', success: '✅', warning: '⚠️', error: '⛔' }
+const TONE_ICONS = { info: 'info', success: 'check-circle', warning: 'alert-triangle', error: 'x-circle' }
 
 const store = useNotificationStore()
 const dialog = computed(() => store.dialog)
@@ -90,7 +93,10 @@ useDialogA11y({
 <style scoped>
 .dlg-overlay { z-index: 2500; }
 .dlg { text-align: center; max-width: 440px; }
-.dlg-icon { font-size: 2.4rem; margin-bottom: 0.4rem; }
+.dlg-icon { display: flex; justify-content: center; margin-bottom: 0.6rem; color: var(--info-text); }
+.dlg.success .dlg-icon { color: var(--success-text); }
+.dlg.warning .dlg-icon { color: var(--warning-text); }
+.dlg.error .dlg-icon { color: var(--danger-text); }
 .dlg h3 { margin-bottom: 0.6rem; }
 .dlg-message { color: var(--text-secondary); line-height: 1.5; white-space: pre-line; word-break: break-word; }
 .dlg-warning { margin-top: 0.7rem; color: var(--danger-text); font-weight: 600; font-size: 0.9rem; }
