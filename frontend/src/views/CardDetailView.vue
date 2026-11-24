@@ -3,11 +3,17 @@
     <div v-if="loading" class="u-state">Загрузка…</div>
     <div v-else-if="error" class="u-state">
       <p>{{ error }}</p>
-      <router-link to="/cards" class="btn btn-secondary">← В каталог</router-link>
+      <router-link to="/cards" class="btn btn-secondary">
+        <AppIcon name="arrow-left" :size="16" />
+        В каталог
+      </router-link>
     </div>
 
     <template v-else-if="card">
-      <router-link to="/cards" class="back">← Каталог разработок</router-link>
+      <router-link to="/cards" class="back">
+        <AppIcon name="arrow-left" :size="16" />
+        Каталог разработок
+      </router-link>
 
       <div v-if="card.status !== 'published'" class="u-notice">
         Это черновик: карточку видят только администратор факультета и суперадмин. Посетители её не увидят.
@@ -24,8 +30,14 @@
           <router-link v-for="t in card.tags" :key="t" class="u-chip" :to="{ path: '/cards', query: { tag: t } }">{{ t }}</router-link>
         </div>
         <div class="u-actions cta">
-          <button v-if="card.status === 'published'" class="btn btn-primary" @click="openForm">✉️ Оставить заявку</button>
-          <router-link v-if="card.can_manage" :to="`/manage/cards/${card.id}`" class="btn btn-secondary">✏️ Редактировать</router-link>
+          <button v-if="card.status === 'published'" class="btn btn-primary" @click="openForm">
+            <AppIcon name="mail" :size="16" />
+            Оставить заявку
+          </button>
+          <router-link v-if="card.can_manage" :to="`/manage/cards/${card.id}`" class="btn btn-secondary">
+            <AppIcon name="edit" :size="16" />
+            Редактировать
+          </router-link>
         </div>
       </header>
 
@@ -70,10 +82,16 @@
 
       <!-- Просмотр изображения -->
       <div v-if="lightbox !== null" ref="lightboxPanel" class="lightbox" tabindex="-1" role="dialog" aria-modal="true" aria-label="Просмотр изображения" @click="lightbox = null">
-        <button v-if="lightbox > 0" class="nav prev" aria-label="Предыдущее" @click.stop="lightbox -= 1">‹</button>
+        <button v-if="lightbox > 0" class="nav prev" aria-label="Предыдущее" @click.stop="lightbox -= 1">
+          <AppIcon name="chevron-left" :size="30" />
+        </button>
         <img :src="apiUrl(card.gallery_urls[lightbox])" alt="">
-        <button v-if="lightbox < card.gallery_urls.length - 1" class="nav next" aria-label="Следующее" @click.stop="lightbox += 1">›</button>
-        <button class="close" aria-label="Закрыть" @click.stop="lightbox = null">×</button>
+        <button v-if="lightbox < card.gallery_urls.length - 1" class="nav next" aria-label="Следующее" @click.stop="lightbox += 1">
+          <AppIcon name="chevron-right" :size="30" />
+        </button>
+        <button class="close" aria-label="Закрыть" @click.stop="lightbox = null">
+          <AppIcon name="x" :size="22" />
+        </button>
       </div>
 
       <!-- Заявка -->
@@ -129,6 +147,7 @@
 
 <script setup>
 import { ref, reactive, computed, watch, onMounted } from 'vue'
+import AppIcon from '../components/AppIcon.vue'
 import { useRoute } from 'vue-router'
 import universityService, { apiUrl } from '../services/university'
 import { useAuthStore } from '../stores/auth'
@@ -221,7 +240,7 @@ watch(() => route.params.id, load)
 </script>
 
 <style scoped>
-.back { display: inline-block; margin-bottom: 1rem; color: var(--primary-color); text-decoration: none; }
+.back { display: inline-flex; align-items: center; gap: 0.4rem; margin-bottom: 1rem; color: var(--primary-color); text-decoration: none; }
 .head { margin-bottom: 1.5rem; display: flex; flex-direction: column; gap: 0.7rem; }
 .head h1 { color: var(--text-primary); font-size: 1.9rem; line-height: 1.25; }
 .summary { color: var(--text-secondary); font-size: 1.08rem; line-height: 1.55; }
@@ -255,9 +274,10 @@ watch(() => route.params.id, load)
 
 .lightbox { position: fixed; inset: 0; z-index: 2000; background: rgba(0, 0, 0, 0.88); display: flex; align-items: center; justify-content: center; cursor: zoom-out; }
 .lightbox img { max-width: 92vw; max-height: 90vh; border-radius: 8px; }
-.lightbox .nav, .lightbox .close { position: absolute; background: rgba(255, 255, 255, 0.18); color: #fff; border: none; cursor: pointer; border-radius: 8px; }
-.lightbox .nav { top: 50%; transform: translateY(-50%); font-size: 2.5rem; padding: 0.2rem 1rem; }
+.lightbox .nav, .lightbox .close { position: absolute; display: flex; align-items: center; justify-content: center; background: rgba(255, 255, 255, 0.18); color: #fff; border: none; cursor: pointer; border-radius: 8px; }
+.lightbox .nav:hover, .lightbox .close:hover { background: rgba(255, 255, 255, 0.3); }
+.lightbox .nav { top: 50%; transform: translateY(-50%); padding: 0.8rem 0.5rem; }
 .lightbox .prev { left: 1rem; }
 .lightbox .next { right: 1rem; }
-.lightbox .close { top: 1rem; right: 1rem; font-size: 1.8rem; padding: 0 0.8rem; }
+.lightbox .close { top: 1rem; right: 1rem; padding: 0.5rem; }
 </style>
