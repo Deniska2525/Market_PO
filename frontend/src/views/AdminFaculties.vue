@@ -5,7 +5,10 @@
         <h2>Факультеты</h2>
         <p class="u-subtitle">Карточки и администраторы привязываются к факультету</p>
       </div>
-      <button class="btn btn-primary" @click="openCreate">➕ Новый факультет</button>
+      <button class="btn btn-primary" @click="openCreate">
+        <AppIcon name="plus" :size="16" />
+        Новый факультет
+      </button>
     </div>
 
     <div v-if="error" class="u-alert">{{ error }}</div>
@@ -31,8 +34,8 @@
             <td>{{ f.short_name || '—' }}</td>
             <td>{{ f.cards_count }}</td>
             <td class="u-col-actions">
-              <button class="u-icon-btn" title="Редактировать" aria-label="Редактировать" @click="openEdit(f)">✏️</button>
-              <button class="u-icon-btn" title="Удалить" aria-label="Удалить" @click="askDelete(f)">🗑️</button>
+              <button class="u-icon-btn" title="Редактировать" aria-label="Редактировать" @click="openEdit(f)"><AppIcon name="edit" :size="18" /></button>
+              <button class="u-icon-btn" title="Удалить" aria-label="Удалить" @click="askDelete(f)"><AppIcon name="trash" :size="18" /></button>
             </td>
           </tr>
         </tbody>
@@ -68,6 +71,7 @@
 
 <script setup>
 import { ref, reactive, computed, onMounted } from 'vue'
+import AppIcon from '../components/AppIcon.vue'
 import universityService from '../services/university'
 import { useNotify } from '../composables/useNotify'
 import { useDialogA11y } from '../composables/useDialogA11y'
