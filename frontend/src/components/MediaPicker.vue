@@ -3,18 +3,31 @@
     <div v-if="ids.length" class="items" :class="kind">
       <div v-for="(id, i) in ids" :key="id" class="item">
         <img v-if="kind === 'image'" :src="imageSrc(id)" alt="" loading="lazy">
-        <div v-else class="file-chip">📦 {{ labelFor(id) }}</div>
+        <div v-else class="file-chip">
+          <AppIcon name="package" :size="16" />
+          <span>{{ labelFor(id) }}</span>
+        </div>
         <div class="item-actions">
-          <button v-if="multiple && i > 0" type="button" title="Левее" @click="move(i, -1)">←</button>
-          <button v-if="multiple && i < ids.length - 1" type="button" title="Правее" aria-label="Правее" @click="move(i, 1)">→</button>
-          <button type="button" title="Убрать из записи" aria-label="Убрать из записи" @click="remove(id)">✕</button>
+          <button v-if="multiple && i > 0" type="button" title="Левее" aria-label="Левее" @click="move(i, -1)">
+            <AppIcon name="arrow-left" :size="14" />
+          </button>
+          <button v-if="multiple && i < ids.length - 1" type="button" title="Правее" aria-label="Правее" @click="move(i, 1)">
+            <AppIcon name="arrow-right" :size="14" />
+          </button>
+          <button type="button" title="Убрать из записи" aria-label="Убрать из записи" @click="remove(id)">
+            <AppIcon name="x" :size="14" />
+          </button>
         </div>
       </div>
     </div>
 
     <div class="controls">
       <label class="btn btn-secondary upload-btn" :class="{ disabled: busy || full }">
-        {{ busy ? `Загрузка… ${progress}%` : '⬆️ Загрузить' }}
+        <template v-if="busy">Загрузка… {{ progress }}%</template>
+        <template v-else>
+          <AppIcon name="upload" :size="16" />
+          Загрузить
+        </template>
         <input
           type="file"
           hidden
@@ -24,7 +37,10 @@
           @change="onFilesChosen"
         >
       </label>
-      <button type="button" class="btn btn-secondary" :disabled="busy" @click="openLibrary">🗂 Из библиотеки</button>
+      <button type="button" class="btn btn-secondary" :disabled="busy" @click="openLibrary">
+        <AppIcon name="folder" :size="16" />
+        Из библиотеки
+      </button>
       <small v-if="multiple" class="counter">{{ ids.length }} из {{ maxItems }}</small>
     </div>
 
@@ -59,6 +75,7 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
+import AppIcon from './AppIcon.vue'
 import universityService, { apiUrl } from '../services/university'
 import { FILE_ACCEPT, IMAGE_ACCEPT, extractErrors, formatBytes } from '../utils/format'
 import { useNotify } from '../composables/useNotify'
@@ -188,10 +205,11 @@ onMounted(async () => {
 .items { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-bottom: 0.7rem; }
 .item { position: relative; border: 1px solid var(--border-color); border-radius: 8px; background: var(--bg-card); overflow: hidden; }
 .items.image .item img { display: block; width: 110px; height: 110px; object-fit: cover; }
-.file-chip { padding: 0.6rem 0.8rem; color: var(--text-primary); font-size: 0.9rem; max-width: 320px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.file-chip { display: flex; align-items: center; gap: 0.5rem; padding: 0.6rem 0.8rem; color: var(--text-primary); font-size: 0.9rem; max-width: 320px; }
+.file-chip span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .item-actions { display: flex; gap: 0.2rem; padding: 0.2rem; justify-content: flex-end; }
 .items.image .item-actions { position: absolute; top: 0; right: 0; left: 0; padding: 0.2rem; background: linear-gradient(rgba(0, 0, 0, 0.45), transparent); }
-.item-actions button { border: none; background: rgba(0, 0, 0, 0.55); color: #fff; border-radius: 4px; cursor: pointer; padding: 0.1rem 0.4rem; font-size: 0.8rem; }
+.item-actions button { border: none; background: rgba(0, 0, 0, 0.55); color: #fff; border-radius: 4px; cursor: pointer; padding: 0.2rem 0.4rem; display: inline-flex; align-items: center; justify-content: center; }
 .items.file .item-actions button { background: var(--bg-tertiary); color: var(--text-secondary); }
 .controls { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; }
 .upload-btn { cursor: pointer; }
