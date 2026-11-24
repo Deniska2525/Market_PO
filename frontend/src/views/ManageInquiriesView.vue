@@ -7,7 +7,10 @@
           {{ authStore.isSuperuser ? 'По всем факультетам' : `Факультет: ${authStore.facultyName}` }}
         </p>
       </div>
-      <router-link to="/manage" class="btn btn-secondary">← К карточкам</router-link>
+      <router-link to="/manage" class="btn btn-secondary">
+        <AppIcon name="arrow-left" :size="16" />
+        К карточкам
+      </router-link>
     </div>
 
     <div class="tabs" role="tablist" aria-label="Статус заявок">
@@ -54,15 +57,22 @@
     </article>
 
     <div v-if="page > 0 || hasNext" class="u-pager">
-      <button class="btn btn-secondary" :disabled="page === 0 || loading" @click="goPage(-1)">← Назад</button>
+      <button class="btn btn-secondary" :disabled="page === 0 || loading" @click="goPage(-1)">
+        <AppIcon name="arrow-left" :size="16" />
+        Назад
+      </button>
       <span>Страница {{ page + 1 }}</span>
-      <button class="btn btn-secondary" :disabled="!hasNext || loading" @click="goPage(1)">Вперёд →</button>
+      <button class="btn btn-secondary" :disabled="!hasNext || loading" @click="goPage(1)">
+        Вперёд
+        <AppIcon name="arrow-right" :size="16" />
+      </button>
     </div>
   </div>
 </template>
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
+import AppIcon from '../components/AppIcon.vue'
 import universityService from '../services/university'
 import { useAuthStore } from '../stores/auth'
 import { useNotify } from '../composables/useNotify'
