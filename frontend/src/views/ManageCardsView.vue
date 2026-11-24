@@ -9,9 +9,13 @@
       </div>
       <div class="u-actions">
         <router-link to="/manage/inquiries" class="btn btn-secondary">
-          📨 Заявки<span v-if="stats && stats.inquiries_new" class="count">{{ stats.inquiries_new }}</span>
+          <AppIcon name="inbox" :size="16" />
+          Заявки<span v-if="stats && stats.inquiries_new" class="count">{{ stats.inquiries_new }}</span>
         </router-link>
-        <router-link to="/manage/cards/new" class="btn btn-primary">➕ Новая карточка</router-link>
+        <router-link to="/manage/cards/new" class="btn btn-primary">
+          <AppIcon name="plus" :size="16" />
+          Новая карточка
+        </router-link>
       </div>
     </div>
 
@@ -67,15 +71,15 @@
             <td><span class="u-badge" :class="STATUS_BADGES[card.status]">{{ STATUS_LABELS[card.status] || card.status }}</span></td>
             <td>{{ formatDate(card.updated_at) }}</td>
             <td class="u-col-actions">
-              <router-link :to="`/manage/cards/${card.id}`" class="u-icon-btn" title="Редактировать" aria-label="Редактировать">✏️</router-link>
+              <router-link :to="`/manage/cards/${card.id}`" class="u-icon-btn" title="Редактировать" aria-label="Редактировать"><AppIcon name="edit" :size="18" /></router-link>
               <button
                 class="u-icon-btn"
                 :title="card.status === 'published' ? 'Скрыть из каталога' : 'Опубликовать'"
                 :aria-label="card.status === 'published' ? 'Скрыть из каталога' : 'Опубликовать'"
                 @click="toggleStatus(card)"
-              >{{ card.status === 'published' ? '🙈' : '🚀' }}</button>
-              <router-link :to="`/cards/${card.id}`" class="u-icon-btn" title="Открыть страницу" aria-label="Открыть страницу">↗️</router-link>
-              <button class="u-icon-btn" title="Удалить" aria-label="Удалить" @click="askDelete(card)">🗑️</button>
+              ><AppIcon :name="card.status === 'published' ? 'eye-off' : 'send'" :size="18" /></button>
+              <router-link :to="`/cards/${card.id}`" class="u-icon-btn" title="Открыть страницу" aria-label="Открыть страницу"><AppIcon name="external-link" :size="18" /></router-link>
+              <button class="u-icon-btn" title="Удалить" aria-label="Удалить" @click="askDelete(card)"><AppIcon name="trash" :size="18" /></button>
             </td>
           </tr>
         </tbody>
@@ -83,15 +87,22 @@
     </div>
 
     <div v-if="page > 0 || hasNext" class="u-pager">
-      <button class="btn btn-secondary" :disabled="page === 0 || loading" @click="goPage(-1)">← Назад</button>
+      <button class="btn btn-secondary" :disabled="page === 0 || loading" @click="goPage(-1)">
+        <AppIcon name="arrow-left" :size="16" />
+        Назад
+      </button>
       <span>Страница {{ page + 1 }}</span>
-      <button class="btn btn-secondary" :disabled="!hasNext || loading" @click="goPage(1)">Вперёд →</button>
+      <button class="btn btn-secondary" :disabled="!hasNext || loading" @click="goPage(1)">
+        Вперёд
+        <AppIcon name="arrow-right" :size="16" />
+      </button>
     </div>
   </div>
 </template>
 
 <script setup>
 import { ref, reactive, computed, onMounted } from 'vue'
+import AppIcon from '../components/AppIcon.vue'
 import universityService from '../services/university'
 import { useAuthStore } from '../stores/auth'
 import { useNotify } from '../composables/useNotify'
