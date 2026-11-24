@@ -3,8 +3,14 @@
     <div class="u-header">
       <h1>{{ isEdit ? 'Редактирование карточки' : 'Новая карточка' }}</h1>
       <div class="u-actions">
-        <router-link v-if="isEdit" :to="`/cards/${cardId}`" class="btn btn-secondary">↗️ Как видят посетители</router-link>
-        <router-link to="/manage" class="btn btn-secondary">← К списку</router-link>
+        <router-link v-if="isEdit" :to="`/cards/${cardId}`" class="btn btn-secondary">
+          <AppIcon name="external-link" :size="16" />
+          Как видят посетители
+        </router-link>
+        <router-link to="/manage" class="btn btn-secondary">
+          <AppIcon name="arrow-left" :size="16" />
+          К списку
+        </router-link>
       </div>
     </div>
 
@@ -112,6 +118,7 @@
 
 <script setup>
 import { ref, reactive, computed, onMounted, onBeforeUnmount } from 'vue'
+import AppIcon from '../components/AppIcon.vue'
 import { useRoute, useRouter, onBeforeRouteLeave } from 'vue-router'
 import universityService from '../services/university'
 import { useAuthStore } from '../stores/auth'
