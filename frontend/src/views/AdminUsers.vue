@@ -5,7 +5,10 @@
         <h2>Пользователи</h2>
         <p class="u-subtitle">Администраторов факультетов создаёт и назначает суперадмин</p>
       </div>
-      <button class="btn btn-primary" @click="openCreate">➕ Администратор факультета</button>
+      <button class="btn btn-primary" @click="openCreate">
+        <AppIcon name="plus" :size="16" />
+        Администратор факультета
+      </button>
     </div>
 
     <form class="u-filters" @submit.prevent="load">
@@ -64,8 +67,8 @@
             </td>
             <td class="u-col-actions">
               <template v-if="u.role !== 'superuser'">
-                <button class="u-icon-btn" title="Редактировать" aria-label="Редактировать" @click="openEdit(u)">✏️</button>
-                <button class="u-icon-btn" title="Удалить" aria-label="Удалить" @click="askDelete(u)">🗑️</button>
+                <button class="u-icon-btn" title="Редактировать" aria-label="Редактировать" @click="openEdit(u)"><AppIcon name="edit" :size="18" /></button>
+                <button class="u-icon-btn" title="Удалить" aria-label="Удалить" @click="askDelete(u)"><AppIcon name="trash" :size="18" /></button>
               </template>
             </td>
           </tr>
@@ -137,6 +140,7 @@
 
 <script setup>
 import { ref, reactive, computed, onMounted } from 'vue'
+import AppIcon from '../components/AppIcon.vue'
 import { useRoute } from 'vue-router'
 import universityService from '../services/university'
 import { useNotify } from '../composables/useNotify'
