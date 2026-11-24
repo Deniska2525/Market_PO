@@ -8,13 +8,15 @@
     @focusin="pause"
     @focusout="resume"
   >
-    <span class="icon" aria-hidden="true">{{ ICONS[toast.type] }}</span>
+    <span class="icon" aria-hidden="true"><AppIcon :name="ICONS[toast.type]" :size="14" :stroke-width="3" /></span>
     <div class="body">
       <strong v-if="toast.title" class="title">{{ toast.title }}</strong>
       <span class="message">{{ toast.message }}</span>
     </div>
     <span v-if="toast.count > 1" class="count" :title="`Повторилось ${toast.count} раз`">×{{ toast.count }}</span>
-    <button type="button" class="close" aria-label="Закрыть уведомление" @click="emit('close', toast.id)">×</button>
+    <button type="button" class="close" aria-label="Закрыть уведомление" @click="emit('close', toast.id)">
+      <AppIcon name="x" :size="16" />
+    </button>
     <span
       v-if="toast.timeout > 0"
       :key="toast.stamp"
@@ -25,9 +27,10 @@
 </template>
 
 <script setup>
+import AppIcon from './AppIcon.vue'
 import { onMounted, onBeforeUnmount, watch } from 'vue'
 
-const ICONS = { success: '✓', error: '✕', warning: '!', info: 'i' }
+const ICONS = { success: 'check', error: 'x', warning: 'exclamation', info: 'info-mark' }
 
 const props = defineProps({
   toast: { type: Object, required: true }
@@ -120,8 +123,10 @@ watch(() => props.toast.stamp, () => {
   border: none;
   background: transparent;
   color: var(--text-secondary);
-  font-size: 1.3rem;
-  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
   border-radius: 6px;
   cursor: pointer;
 }
@@ -138,8 +143,7 @@ watch(() => props.toast.stamp, () => {
   transform-origin: left;
   animation: toast-bar linear forwards;
 }
-.toast:hover .bar,
-.toast:focus-within .bar { animation-play-state: paused; }
+.toast:hover .bar, .toast:focus-within .bar { animation-play-state: paused; }
 
 @keyframes toast-bar {
   from { transform: scaleX(1); }
